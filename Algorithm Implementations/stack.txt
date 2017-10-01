@@ -1,0 +1,40 @@
+struct node {
+    int val;
+    int max_element;
+    struct node *next;
+    node () {
+        max_element = -1000000007;
+    }
+};
+void push(struct node *&head, int value) {
+    if(head == NULL) {
+        head = new struct node;
+        head->val = value;
+        head->next = NULL;
+        if(value > head->max_element) {
+            head->max_element = value;
+        }
+    }
+    else {
+        struct node *p = new struct node;
+        p->val = value;
+        p->next = head;
+        int temp_max = head->max_element;
+        head = p;
+        if(temp_max < value) {
+            temp_max = value;
+        }
+        head->max_element = temp_max;
+    }
+}
+void pop(struct node *&head) {
+    if(head == NULL) { cerr<<"Pop on empty stack"<<endl; exit(1); }
+    struct node *p = head->next;
+    int temp_max = head->max_element;
+    head->next = NULL;
+    head = p;
+}
+int top(struct node *&head) { 
+    if(head == NULL) return -1000000007;
+    return head->val; 
+}

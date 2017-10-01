@@ -1,0 +1,53 @@
+// RECURSIVE
+tuple<int, int, int> find_max_crossing_subarray(int a[], int low, int mid, int high) {
+	int left_sum = -1000000007, sum = 0, max_left = mid;
+	int right_sum = -1000000007, max_right = mid + 1;
+	for(int i = mid; i >= low; i--) {
+		sum += a[i];
+		if(sum > left_sum) {
+			left_sum = sum;
+			max_left = i;
+		}
+	}
+	sum = 0;
+	for(int i = mid + 1; i < high; i++) {
+		sum += a[i];
+		if(sum > right_sum) {
+			right_sum = sum;
+			max_right = i;
+		}
+	}
+	return make_tuple(max_left, max_right, left_sum + right_sum);
+}
+tuple<int, int, int> find_max_subarray(int a[], int low, int high) {
+	int left_low, left_high, right_low, right_high, cross_low, cross_high;
+	int left_sum = 0, right_sum = 0, cross_sum = 0;
+	if(low == high) return make_tuple(low, high, a[low]);
+	else {
+		int mid = (low + high) / 2;
+		tie(left_low, left_high, left_sum) = find_max_subarray(a, low, mid);
+		tie(right_low, right_high, right_sum) = find_max_subarray(a, mid + 1, high);
+		tie(cross_low, cross_high, cross_sum) = find_max_crossing_subarray(a, low, mid, high);
+		if(left_sum >= right_sum && left_sum >= cross_sum) return make_tuple(left_low, left_high, left_sum);
+		else if(right_sum >= left_sum && right_sum >= cross_sum) return make_tuple(right_low, right_high, right_sum);
+		else return make_tuple(cross_low, cross_high, cross_sum);
+	}
+}
+
+// ITERATIVE (KADANE'S ALGORITHM)
+tuple<int, int, int> find_max_subarray_iterative(int a[], int low, int high) {
+	int max_ending_here = a[low], max_so_far = a[low];
+	int start_index = 0, end_index = 0;
+	for(int i = low + 1; i <= high; i++) {
+		if(max_ending_here + a[i] <= a[i]) {
+			max_ending_here = a[i];
+			start_index = i;
+		}
+		else max_ending_here += a[i];
+		if(max_so_far < max_ending_here) {
+			max_so_far = max_ending_here;
+			end_index = i;
+		}
+	}
+	return make_tuple(start_index, end_index, max_so_far);
+}

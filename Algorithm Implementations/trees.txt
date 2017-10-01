@@ -1,0 +1,120 @@
+void Preorder(node *root) {
+    if(root!=NULL) {
+        cout<<root->data<<" ";
+        Preorder(root->left);
+        Preorder(root->right);
+    }
+}
+void Postorder(node *root) {
+    if(root!=NULL) {
+        Postorder(root->left);
+        Postorder(root->right);
+        cout<<root->data<<" ";
+    }
+}
+void Inorder(node *root) {
+    if(root!=NULL) {
+        Inorder(root->left);
+        cout<<root->data<<" ";
+        Inorder(root->right);
+    }
+}
+int height(node * root)
+{
+    if(root==NULL)
+         return 0;
+    else {
+        int l=height(root->left);
+        int r=height(root->right);
+        if(l>r)
+            return l+1;
+        else
+            return r+1;
+    }
+}
+void top_view(node * root)
+{
+    struct node *p=root; vector<int> v;
+    vector<int>::iterator i;
+    while(p!=NULL) {
+        i=v.begin();
+        v.insert(i,p->data);
+        p=p->left; 
+    }
+    p=root->right;
+    while(p!=NULL) {
+        v.push_back(p->data);
+        p=p->right;
+    }
+    for(i=v.begin();i<v.end();i++)
+        cout<<*i<<" ";
+}
+void LevelOrder(node * root)
+{
+    queue<node *> q;
+    if(root!=NULL)
+      q.push(root);
+    while(!q.empty()){
+        node *p=q.front();
+        if(p==NULL)
+            continue;
+        cout<<p->data<<" ";
+        q.pop();
+        if(p->left!=NULL)
+            q.push(p->left);
+        if(p->right!=NULL)
+            q.push(p->right);
+    }
+}
+node * insertBST(node * root, int value)
+{
+   struct node *q=root,*p,*r;
+   if(root==NULL) {
+       root=(node*)malloc(sizeof(struct node));
+       root->data=value; root->left=root->right=NULL;
+   }
+    else {
+        while(q!=NULL) {
+            p=q;
+            if(q->data > value) q=q->left;
+            else if(q->data<value) q=q->right;
+        }
+        if(p->data < value) {
+            r=(node*)malloc(sizeof(struct node));
+            r->data=value; r->left=r->right=NULL;
+            p->right=r;
+        }
+        else {
+            r=(node*)malloc(sizeof(struct node));
+            r->data=value; r->left=r->right=NULL;
+            p->left=r;
+        }
+    }
+   return root;
+}
+void decode_huffman(node * root,string s)
+{
+    node *p=root;
+    int i=0;
+    vector<char> v;
+    while(i<s.length()) {
+        if(s[i]=='1') {
+            p=p->right; i++;
+        }
+        else {
+            p=p->left; i++;
+        }
+        if(p->right==NULL && p->left==NULL) {
+            v.push_back(p->data);
+            p=root;
+        }
+        //else i++;
+    }
+    for(i=0;i<v.size();i++) cout<<v[i];
+}
+node * lcaBST(node * root, int v1,int v2)
+{
+    if(root->data > v1 && root->data >v2) return lca(root->left,v1,v2);
+    else if(root->data < v1 && root->data < v2) return lca(root->right,v1,v2);
+    else return root;
+}

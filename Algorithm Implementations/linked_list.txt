@@ -1,0 +1,262 @@
+bool has_cycle(Node* head) {
+    Node* fast = head;
+    Node* slow = head;
+    while(fast != NULL && slow != NULL && fast->next) {
+        fast = fast->next->next;
+        slow = slow->next;
+        if(fast == slow) {
+            return 1;
+        }
+    }
+    
+    return 0;
+}
+void Print(Node *head) {
+    Node *p;
+    for(p=head;p!=NULL;p=p->next)
+        cout<<p->data<<endl;
+}
+Node* InsertTail(Node *head,int data) {
+    Node *p,*q;
+    if(head==NULL) {
+        head=(Node*)malloc(sizeof(Node));
+        head->data=data;
+        head->next=NULL;
+    }
+    else {
+        q=(Node*)malloc(sizeof(Node));
+        q->data=data;
+        q->next=NULL;
+        for(p=head;p->next!=NULL;p=p->next);
+        p->next=q;
+    }
+    return head;
+}
+Node* InsertHead(Node *head,int data) {
+    Node *q;
+    q=(Node*)malloc(sizeof(Node));
+    q->data=data;
+    q->next=head; head=q;
+    return head;
+}
+Node* InsertNth(Node *head, int data, int position) {
+    Node *p,*q,*r; int c=0;
+    if(position==0) {
+        q=(Node*)malloc(sizeof(Node));
+        q->data=data;
+        q->next=head; head=q;
+    }
+    else {
+        for(p=r=head;p!=NULL;r=p,p=p->next,c++) {
+            if(c==position)
+                break;
+        }
+        q=(Node*)malloc(sizeof(Node));
+        q->data=data; r->next=q; q->next=p;
+    }
+    return head;
+}
+Node* Delete(Node *head, int position) {
+    Node *p,*q; int i=0;
+    if(position==0)
+        head=head->next;
+    else {
+        for(p=head;p!=NULL;q=p,p=p->next) {
+            if(i<position)
+                i++;
+            else
+                break;
+        }
+        q->next=p->next;
+        delete(p);
+        p = NULL;
+    }
+    return head;
+}
+void ReversePrint(Node *head) { 
+    Node *p,*q,*r,*head1=NULL;
+    for(p=head;p!=NULL;p=p->next) {
+        if(head1==NULL) {
+            head1=(Node*)malloc(sizeof(Node));
+            head1->data=p->data; head1->next=NULL;
+        }
+        else {
+            q=(Node*)malloc(sizeof(Node));
+            q->data=p->data;
+            q->next=head1; head1=q;
+        }
+    }
+    for(q=head1;q!=NULL;q=q->next)
+        printf("%d\n",q->data);
+}
+Node* Reverse(Node *head) {
+    Node *prev = NULL, *cur = head, *next = cur->next;
+    while(cur != NULL) {
+        next = cur->next;
+        cur->next = prev;
+        prev = cur;
+        cur = next;
+    }
+    head = prev;
+    return head;
+}
+int CompareLists(Node *headA, Node* headB) {
+    Node *p,*q; int flag=0,x;
+    for(p=headA,q=headB;p!=NULL && q!=NULL;p=p->next,q=q->next) {
+        if(p->data==q->data) flag=1;
+        else {
+            flag=0; break;  
+        }
+    }
+    if(q==NULL && p!=NULL) flag=0;
+    if(p==NULL && q!=NULL) flag=0;
+    if(flag==1) x=1;
+    else x=0;
+    return x;
+}
+Node* MergeLists(Node *headA, Node* headB)
+{
+    if(headA == NULL && headB == NULL) return NULL;
+    else if(headA == NULL) return headB;
+    else if(headB == NULL) return headA;
+    Node *headC = NULL, *p, *q, *r, *s, *t, *u, *v;
+    for(p = headA, q = headB; p != NULL && q != NULL;) {
+        if(headC == NULL) {
+            headC = new Node;
+            if(p->data < q->data) {
+                headC->data = p->data; headC->next = NULL; s = p; p = p->next;
+            }
+            else { 
+                headC->data = q->data; headC->next = NULL; t = q; q = q->next;
+            }
+         }
+        else {
+            for(r = headC; r != NULL; u = r, r = r->next);
+            v = new Node;
+            if(p->data < q->data) {
+                v->data = p->data; v->next = NULL; u->next = v; s = p; p = p->next;
+            }
+            else {
+                v->data = q->data; v->next = NULL; u->next = v; t = q; q = q->next;
+            }
+        }
+    }
+    if(p == NULL) {
+        while(q != NULL) {
+            for(r = headC; r != NULL; u = r, r = r->next);
+            v = new Node; v->data = q->data; v->next = NULL; u->next = v; t = q; q = q->next;
+        }
+    }
+    else if(q == NULL) {
+        while(p != NULL) {
+            for(r = headC; r != NULL; u = r, r = r->next);
+            v = new Node; v->data = p->data; v->next = NULL; u->next = v; s = p; p = p->next;
+        }
+    }
+    return headC;
+}
+int length(Node *head) {
+    Node *p; int count=0;
+    for(p=head;p!=NULL;p=p->next) 
+        count++;
+    return count;
+}
+int GetNodeValFromTail(Node *head,int positionFromTail)
+{
+    Node *p,*q,*head1;
+    int i,c=length(head);
+    for(i=0,p=head;p!=NULL && i<c-positionFromTail;q=p,p=p->next,i++);
+    return q->data;
+}
+Node* RemoveDuplicates(Node *head)
+{
+    if(head == NULL) return NULL;
+    else {
+        Node *p = head;
+        while(p != NULL) {
+            if(p->next != NULL && p->data == p->next->data) {
+                Node *temp = p->next;
+                p->next = temp->next;
+                delete temp;
+                temp = NULL;
+            }
+            else p = p->next;
+        }
+    }
+    return head;
+}
+bool has_cycle(Node* head) {
+    Node* fast = head;
+    Node* slow = head;
+    while(fast != NULL && slow != NULL && fast->next) {
+        fast = fast->next->next;
+        slow = slow->next;
+        if(fast == slow) {
+            return 1;
+        }
+    }
+    
+    return 0;
+}
+Node* SortedInsertDoublyLL(Node *head,int data)
+{
+    Node *p,*q,*r;
+    //Case 1 head == NULL
+    if(head==NULL) {
+        q=(Node*)malloc(sizeof(Node));
+        q->data=data; q->next=NULL;
+        q->prev=NULL;
+        return q;
+    }
+    else {
+        //Case 2 head->data > data
+        if(head->data > data) {
+            q=(Node*)malloc(sizeof(Node));
+            q->data=data; q->prev=NULL;
+            q->next=head; head->prev=q;
+            head=q;
+        }
+        else {
+            for(p=head,r=head;p!=NULL;r=p,p=p->next) {
+                //Case 3 intermediate element data > data
+                if(p->data > data) {
+                    q=(Node*)malloc(sizeof(Node));
+                    q->data=data; q->prev=r;
+                    r->next=q; q->next=p;
+                    p->prev=q;
+                    break;
+                }
+            }
+            //Case 4 p==NULL 
+            if(p==NULL) {
+                q=(Node*)malloc(sizeof(Node*));
+                q->data=data;
+                q->next=NULL;
+                q->prev=r; r->next=q;
+            }
+        }
+        return head;
+    }
+}
+Node* ReverseDoublyLL(Node* head)
+{
+    // Complete this function
+    // Do not write the main method. 
+    Node *headA=NULL;
+    Node *p,*q,*r;
+    for(p=head;p!=NULL;p=p->next) {
+        if(headA==NULL) {
+            headA=(Node*)malloc(sizeof(Node));
+            headA->data=p->data;
+            headA->prev=headA->next=NULL;
+        }
+        else {
+            q=(Node*)malloc(sizeof(Node));
+            q->data=p->data;
+            headA->prev=q; q->next=headA; q->prev=NULL;
+            headA=q;
+        }
+    }
+    return headA;
+}
+// TODO: add find merge point code

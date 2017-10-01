@@ -1,0 +1,46 @@
+string find_power_representation(int val, int p[]) {
+    if(val == 0) return "";
+    else if(val == 1) return "2(0)";
+    else if(val == 2) return "2";
+    else if(val == 4) return "2(2)";
+    int nval = 0, diff = 0, pow1 = 0;
+    for(int i = 0; i < 15; i++) {
+        if(val < p[i]) {
+            nval = p[i - 1];
+            pow1 = i - 1;
+            diff = val - p[i - 1];
+            break;
+        }
+    }
+    if(val > p[14]) {
+        nval = p[14];
+        pow1 = 14;
+        diff = val - p[14];
+    }
+    // cout<<val<<"=2^"<<pow1<<"+"<<diff<<endl;
+    // found 128 + 9
+    string a1 = find_power_representation(pow1, p);
+    string b1 = find_power_representation(diff, p);
+    if(b1 == "") {
+        if(a1 == "2(0)") return "";
+        else return "2(" + a1 + ")";
+    }
+    else {
+        if(a1 == "2(0)") return "2+" + b1;
+        else return "2(" + a1 + ")" + "+" + b1;
+    }
+}
+
+int main() {
+    int powers_of_two[15];
+    for(int i = 0; i < 15; i++) powers_of_two[i] = 1<<i;
+    // for(int i = 0; i < 15; i++) cout<<powers_of_two[i]<<" ";
+    cout<<"137=" + find_power_representation(137, powers_of_two)<<endl;
+    cout<<"1315=" + find_power_representation(1315, powers_of_two)<<endl;
+    cout<<"73=" + find_power_representation(73, powers_of_two)<<endl;
+    cout<<"136=" + find_power_representation(136, powers_of_two)<<endl;
+    cout<<"255=" + find_power_representation(255, powers_of_two)<<endl;
+    cout<<"1384=" + find_power_representation(1384, powers_of_two)<<endl;
+    cout<<"16385=" + find_power_representation(16385, powers_of_two)<<endl;
+    return 0;
+}
