@@ -1,0 +1,83 @@
+typedef struct node
+{
+    int val;
+    struct node* left;
+    struct node* right;
+    int ht;
+} node;
+
+int height(node* root) {
+    if(root == NULL)
+         return -1;
+    else {
+        int l = height(root->left);
+        int r = height(root->right);
+        if(l > r)
+            return l + 1;
+        else
+            return r + 1;
+    }
+}
+node* right_rotate(node* root) {
+    node* y = root->left;
+    if(y != NULL) {
+        node* alpha = y->right;
+
+        root->left = alpha;
+        y->right = root;
+
+        root->ht = height(root);
+        y->ht = height(y);
+        return y;
+    }
+    return root;
+}
+
+node* left_rotate(node* root) {
+    node* y = root->right;
+    if(y != NULL) {
+        node* alpha = y->left;
+        root->right = alpha;
+        y->left = root;
+
+
+        root->ht = height(root);
+        y->ht = height(y);
+        return y;
+    }
+    return root;
+}
+
+node* insert(node* root, int val) {
+    if(root == NULL) {
+        root = new node();
+        root->val = val;
+        root->left = NULL;
+        root->right = NULL;
+        root->ht = 0;
+        return root;
+    }
+    else if(root->val < val) {
+        root->right = insert(root->right, val);
+    }
+    else if(root->val > val) {
+        root->left = insert(root->left, val);
+    }
+    else {
+        return root;
+    }
+    root->ht = height(root);
+    int balance_factor = height(root->left) - height(root->right);
+    // cout << balance_factor << " " << root->ht << " " << root->left->val << " " << val << endl;
+    if(balance_factor > 1 && root->left->val > val) return right_rotate(root);
+    if(balance_factor < -1 && root->right->val < val) return left_rotate(root);
+    if(balance_factor > 1 && root->left->val < val) {
+        root->left = left_rotate(root->left);
+        return right_rotate(root);
+    }
+    if(balance_factor < -1 && root->right->val > val) {
+        root->right = right_rotate(root->right);
+        return left_rotate(root);
+    }
+    return root;
+}

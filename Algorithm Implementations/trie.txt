@@ -1,0 +1,73 @@
+class TNode {
+    private:
+        int no_of_words;
+        int no_of_prefixes;
+        TNode *children[26];
+    public:
+        TNode() {
+            no_of_words = 0;
+            no_of_prefixes = 0;
+            for(int i = 0; i < 26; i++) {
+                children[i] = NULL;
+            }
+        }
+        void add_word(TNode *root, string word) {
+            /*if(word.empty()) root->no_of_words++;
+            else {
+                root->no_of_prefixes++;
+//                cout << word << " " << root->no_of_prefixes << endl;
+                char k = word[0];
+                if(root->children[k - 'a'] == NULL) {
+                    root->children[k - 'a'] = new TNode();
+                }
+                string except_leftmost_char = word.substr(1);
+                add_word(root->children[k - 'a'], except_leftmost_char);
+            }*/
+            TNode *p = root;
+            if(word.empty()) p->no_of_words++;
+            int l = word.length();
+            for(int i = 0; i < l; i++) {
+                if(p->children[word[i] - 'a'] == NULL) {
+                    p->children[word[i] - 'a'] = new TNode();
+                }
+                p = p->children[word[i] - 'a'];
+                p->no_of_prefixes++;
+            }
+            p->no_of_words++;
+        }
+        int count_words(TNode *root, string word) {
+            /*char k = word[0];
+            if(word.empty()) return root->no_of_prefixes;
+            else if(root->children[k - 'a'] == NULL) return 0;
+            else {
+                string except_leftmost_char = word.substr(1);
+//                if(except_leftmost_char.empty()) return root->no_of_prefixes;
+//                else 
+                    return count_words(root->children[k - 'a'], except_leftmost_char);
+            }*/
+            int l = word.length();
+            bool not_exist = false;
+            for(int i = 0; i < l; i++) {
+//                cout << prefix[i];
+                if(root->children[word[i] - 'a'] != NULL)
+                    root = root->children[word[i] - 'a'];
+                else { not_exist = true; break; }
+            }
+//            cout << endl;
+            if(not_exist) return 0;
+            else return root->no_of_words;
+        }
+        int count_prefixes(TNode *root, string prefix) {
+            int l = prefix.length();
+            bool not_exist = false;
+            for(int i = 0; i < l; i++) {
+//                cout << prefix[i];
+                if(root->children[prefix[i] - 'a'] != NULL)
+                    root = root->children[prefix[i] - 'a'];
+                else { not_exist = true; break; }
+            }
+//            cout << endl;
+            if(not_exist) return 0;
+            else return root->no_of_prefixes;
+        }
+};

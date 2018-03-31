@@ -1,0 +1,43 @@
+class Heap {
+    private:
+        long long heap_size;
+    public:
+        vector<long long int> heap;
+        Heap() {
+            heap_size = 0;
+        }
+        int get_parent_index(int node_ind) {
+            return node_ind / 2;
+        }
+        int get_left_index(int node_ind) {
+            return 2 * node_ind + 1;
+        }
+        int get_right_index(int node_ind) {
+            return 2 * node_ind + 2;
+        }
+        long long heap_min() {
+            return heap[0];
+        }
+        void min_heapify(int ind) {
+            int l = get_left_index(ind);
+            int r = get_right_index(ind);
+            int smallest;
+            if(l <= heap_size - 1 && heap[l] < heap[ind])
+                smallest = l;
+            else 
+                smallest = ind;
+            if(r <= heap_size - 1 && heap[r] < heap[smallest])
+                smallest = r;
+            if(smallest != ind) {
+                long long int temp = heap[ind];
+                heap[ind] = heap[smallest];
+                heap[smallest] = temp;
+                min_heapify(smallest);
+            }
+        }
+        void build_min_heap() {
+            heap_size = heap.size();
+            for(int i = heap.size() / 2 - 1; i >= 0; i--) 
+                min_heapify(i);
+        }
+};
