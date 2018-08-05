@@ -1,0 +1,70 @@
+// World Codesprint 13 - Watson's Love for Arrays
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long LL;
+typedef struct node {
+    LL prod;
+    LL preprod;
+} Tree;
+LL a[100000];
+Tree tree[200001];
+
+void build(int n, int node, int start, int end, LL m) {
+    //cout << node << endl;
+    if(start == end) {
+        tree[node].prod = a[start];
+        tree[node].preprod = a[start];
+    }
+    else {
+        int mid = (start + end) / 2;
+        build(n, 2 * node, start, mid, m);
+        build(n, 2 * node + 1, mid + 1, end, m);
+        tree[node].prod = (tree[2 * node].prod * tree[2 * node + 1].prod) % m;
+        tree[node].preprod = max(tree[2 * node].preprod % m, (tree[2 * node].prod * tree[2 * node + 1].preprod) % m);
+    }
+}
+Tree query(int n, int node, int start, int end, LL m, int l, int r) {
+    //cout << (r <= start) << " " << (l >= end) << " " << l << " " << r << " " << start << " " << end << endl;
+    Tree res; res.prod = res.preprod = 1;
+    if(r <= start || l >= end) return res;
+    if(l <= start && r >= end) return tree[node];
+    int mid = (start + end) / 2;
+    Tree left = query(n, 2 * node, start, mid, m, l, r);
+    Tree right = query(n, 2 * node, mid + 1, end, m, l, r);
+
+    res.prod = (left.prod * right.prod) % m;
+    res.preprod = max(left.preprod % m, (left.prod * right.preprod) % m);
+    cout << res.prod << " " << res.preprod << " " << l << " " << r << " " << start << " " << end << endl;
+    return res;
+}
+int main() {
+    int t;
+    cin >> t;
+    int n;
+    LL m, k;
+    while(t-- > 0) {
+        cin >> n >> m >> k;
+        for(int i = 0; i < n; i++) tree[i].prod = tree[i].preprod = -1;
+        int cnt = 0;
+        for(int i = 0; i < n; i++) {
+            cin >> a[i]; //for(int i = 0; i < n; i++) cout << a[i] << " "; cout << endl;
+            if(a[i] % m == k) cnt++;
+        }
+        build(n, 1, 0, n - 1, m);
+        for(int i = 1; i <= 2 * n; i++) cout << tree[i].prod << " " << tree[i].preprod << endl; cout << endl;
+        int tree_nodes = 2 * n;
+        for(int i = 0; i < n; i++) {
+            for(int j = i + 1; j < n; j++) {
+                if(i != j) {
+                    Tree q = query(n, 1, 0, n - 1, m, i, j);
+                    //cout << i << " " << j << " " << q.prod << " " << q.preprod << endl;
+                    cout << q.prod << endl;
+                    if(q.prod == k) cnt++;
+                }
+            }
+        }
+        cout << cnt << endl;
+        //cout << count(tree + 1, tree + 2 * n, k) << endl;
+    }
+    return 0;
+}

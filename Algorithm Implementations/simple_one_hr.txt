@@ -1,0 +1,69 @@
+#include <cmath>
+#include <cstdio>
+#include <vector>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+typedef pair<long long, long long> pll;
+pll tan_add(pll a, pll b) {
+    return make_pair(a.first * b.second + b.first * a.second , b.second * a.second - a.first * b.first);
+}
+pll tan(long long n, pll x) {
+    if(n == 1) return x;
+    else if(n % 2 == 0) {
+        pll temp = tan(n / 2, x);
+        return tan_add(temp, temp);
+    }
+    else {
+        pll temp = tan(n - 1, x);
+        return tan_add(temp, x);
+    }
+}
+long long int power(long long int x, long long int y, long long int m) {
+    if (y == 0)
+        return 1;
+    long long int p = power(x, y / 2, m) % m;
+    p = (p * p) % m;
+
+    return (y % 2 == 0)? p : (x * p) % m;
+}
+long long int modInverse(long long int a, long long int m) {
+        return power(a, m - 2, m);
+}
+long long int extended_euclidean_algorithm(long long int n, long long int b) {
+    long long int r1 = n, r2 = b, t1 = 0, t2 = 1;
+    while(r2 > 0) {
+        long long int q = r1 / r2;
+        long long int r = r1 % r2;
+        r1 = r2; r2 = r;
+        long long int t = t1 - q * t2;
+        t1 = t2; t2 = t;
+    }
+    if(r1 == 1) {
+        if(t1 < 0) return n + t1;
+        else return t1;
+    }
+    return 0;
+}
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */
+    long long p, q, n;
+    int t;
+    cin >> t;
+    while(t-- > 0) {
+        cin >> p >> q >> n;
+        pll tn = tan(n, make_pair(p, q));
+        // cout << tn.first << " " << tn.second << endl;
+        if(tn.second < 0 && (tn.first > 0 || tn.first < 0)) { tn.first *= (-1); tn.second *= (-1); }
+        long long t1;
+        if(tn.first > 0)
+            t1 = tn.first % 1000000007;   // cout << "YO " << t1 << endl;
+        else
+            t1 = (1000000007 + tn.first) % 1000000007;
+        long long t2 = modInverse(tn.second, 1000000007);
+        long long ans = (t1 * t2) % 1000000007;
+        if(ans < 0) cout << (ans + 1000000007) << endl;
+        else cout << ans << endl;
+    }
+    return 0;
+}

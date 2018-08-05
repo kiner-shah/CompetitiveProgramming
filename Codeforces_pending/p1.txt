@@ -1,0 +1,34 @@
+/*Codeforces Round #358 (Div. 2) C. Alyona and the Tree */
+#include <bits/stdc++.h>
+#define MAX 1000000001
+using namespace std;
+typedef long long LL;
+typedef struct node {
+    int id,no;
+    vector<pair<int,LL>> v;
+}graph;
+long long int c = 0;
+void dfs(graph g, vector<pair<int,LL>> v, int index) {
+    if(p.second < g[index].no) return;
+    for(pair<int,LL> p : v) {
+        if(p.second > g[index].no)
+    }
+}
+int main() {
+    int n,i,j;
+    cin>>n;
+    graph g[n];
+    for(i = 0; i < n; i++) {
+        g[i].id = i;
+        cin>>g[i].no;
+    }
+    int p; long long c;
+    for(i = 0; i < n-1; i++) {
+        cin>>p>>c;
+        g[i+1].v.push_back(make_pair(p-1,c));
+        g[p-1].v.push_back(make_pair(i+1,c));
+    }
+    //for(i = 0; i < n; i++) cout<<g[i].id<<" "<<g[i].no<<" "<<g[i].v.size()<<endl;
+    dfs(g,g[0].v,0);
+	return 0;
+}
