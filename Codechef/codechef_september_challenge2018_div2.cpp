@@ -64,6 +64,5 @@ void chef_and_adventures() {
 int main() {
 //  magician_vs_chef();
 //	chef_and_adventures();
-
     return 0;
 }
