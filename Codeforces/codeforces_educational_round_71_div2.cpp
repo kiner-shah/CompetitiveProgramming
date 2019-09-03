@@ -1,4 +1,4 @@
-// Educational Codeforces Round 71 - A. There Are Two Types Of Burgers
+// Codeforces Educational Round 71
 #include <bits/stdc++.h>
 using namespace std;
  
