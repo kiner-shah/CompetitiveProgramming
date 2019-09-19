@@ -5,10 +5,8 @@
 #include <algorithm>
 using namespace std;
 
-
-int main() {
-    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
-    long int n,i;
+void most_distant() {
+   long int n,i;
     double x,y,maxx=-1000000001,minx=1000000001,maxy=-1000000001,miny=1000000001;
     double d=-1000000001,d2;
     cin>>n;
@@ -32,6 +30,10 @@ int main() {
     if(d2 > d) d=d2;
     d2 = sqrt(miny*miny + maxx*maxx);
     if(d2 > d) d=d2;
-    cout<<fixed<<d<<endl;
+    cout<<fixed<<d<<endl; 
+}
+int main() {
+    /* Enter your code here. Read input from STDIN. Print output to STDOUT */   
+    // most_distant();
     return 0;
 }
