@@ -1,7 +1,7 @@
 import java.io.*;
 import java.util.*;
 
-public class Solution {
+class Solution {
 	 public static void main(String args[]) {
 		 String a,b; int p[],q[],i,j,sum=0;
 		 Scanner s=new Scanner(System.in);
