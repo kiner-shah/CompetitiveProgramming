@@ -60,8 +60,69 @@ void periodic_palindrome_construction() {
 		}
 	}
 }
+typedef struct nn {
+	LL data;
+	struct nn *left;
+	struct nn *right;
+} node;
+LL visited;
+node * insertBST(node * root, LL value)
+{
+   node *q=root,*p,*r;
+   //cout<<value<<" ";
+   if(root==NULL) {
+       root=(node*)malloc(sizeof(node));
+       root->data=value; root->left=root->right=NULL;
+       visited++;
+   }
+    else {
+        while(q!=NULL) {
+            p=q;
+            visited++;
+            if(q->data > value) q=q->left;
+            else if(q->data<value) q=q->right;
+        }
+        if(p->data < value) {
+            r=(node*)malloc(sizeof(node));
+            r->data=value; r->left=r->right=NULL;
+            p->right=r;
+            visited++;
+        }
+        else {
+            r=(node*)malloc(sizeof(node));
+            r->data=value; r->left=r->right=NULL;
+            p->left=r;
+            visited++;
+        }
+    }
+   return root;
+}
+void chef_goes_left_right_left() {
+	int t; cin>>t;
+	while(t-- > 0) {
+		LL n, reziba;
+		cin>>n>>reziba;
+		LL x, i;
+		
+		node* root = NULL;
+		for(i = 0; i < n; i++) {
+			cin>>x;
+			visited = 0;
+			root = insertBST(root, x);
+			//for(LL j : visited) cout<<j<<" "; cout<<endl;
+			if(i == n - 1) {
+				//cout<<visited.size()<<" "<<n<<endl;
+				if(visited == n) {
+					cout<<"YES\n";
+				}
+				else cout<<"NO\n";
+			}
+		}
+	}
+}
 int main() {
 	// villages_and_tribes();
 	// periodic_palindrome_construction();
+	// chef_goes_left_right_left();		// partially solved for 20 pts
 	return 0;
 }
