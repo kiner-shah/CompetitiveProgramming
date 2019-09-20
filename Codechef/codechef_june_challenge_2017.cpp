@@ -55,9 +55,28 @@ void xenny_and_coin_rankings() {
         cout<<v + h + 1<<endl;
     }
 }
+void chef_and_the_feast() {
+	int t, i, n;
+    cin>>t;
+    while(t-- > 0) {
+        cin>>n; int count = 0;
+        LL a[n], sum = 0, happiness = 0;
+        for(i = 0; i < n; i++) {
+            cin>>a[i];
+            if(a[i] < 0) {
+                if(count > 0) { happiness += sum * count; count = 0; sum = 0; }
+                happiness += a[i];
+            }
+            else { sum += a[i]; count++; }
+        }
+        happiness += sum * count;
+        cout<<happiness<<endl;
+    }
+}
 int main() {
     // your code goes here 
   	// a_good_set();
 	// xenny_and_coin_rankings();
+	// chef_and_the_feast();	// partially solved for 30 pts
     return 0;
 }
