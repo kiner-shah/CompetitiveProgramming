@@ -1,3 +1,5 @@
+// https://codeforces.com/gym/102397
+// D, E are unsolved
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long LL;
