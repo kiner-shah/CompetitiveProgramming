@@ -54,8 +54,40 @@ void solution_a()
     }
     cout << max(max_val, 0) << endl;
 }
+// B: Anton and Lines
+void solution_b()
+{
+    // Editorial solution:
+    // First find the y coordinates(y1, y2) for x = x1, x2
+    // Then check if for two lines if y1a > y1b and y2a < y2b
+    int n, x1, x2;
+    cin >> n >> x1 >> x2;
+    
+    vector<pair<long long, long long> > y_val;  // slope and intercept
+    long long k, b;
+    while (n-- > 0) {
+        cin >> k >> b;
+        long long y1 = x1 * k + b,
+            y2 = x2 * k + b;
+        y_val.push_back(make_pair(y1, y2));
+    }
+    // sort the vector in increasing order of y1 values
+    sort(y_val.begin(), y_val.end());
+    size_t len = y_val.size() - 1;
+    for (size_t i = 0; i < len; i++) {
+        // cout << i << " " << y_val[i].first << " " << y_val[i].second << " "
+        //      << y_val[i+1].first << " " << y_val[i+1].second << endl;
+        if (y_val[i].first < y_val[i + 1].first
+            && y_val[i].second > y_val[i + 1].second) {
+            cout << "YES\n";
+            return;
+        }
+    }
+    cout << "NO\n";
+}
 int main()
 {
-    solution_a();
+//     solution_a();
+//     solution_b();
     return 0;
 }
